@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<body>
 <?php
 $servername = "localhost";
 $username = "root";
 $password = "Gus2090@";
 $dbname = "parkingdb";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
 
+if ($conn->connect_error) {
+    die("Erro na conexão: " . $conn->connect_error);
+}
+
+$conn->set_charset("utf8");
 ?>
-</body>
-</html>

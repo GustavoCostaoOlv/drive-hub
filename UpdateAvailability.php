@@ -1,25 +1,22 @@
 <?php
-// UpdateAvailability.php
-include 'dbcon.php';
+// UpdateAvailability.php - Versão super simples
+require_once 'dbcon.php';
 
-$Pos = $_GET["Position"];
-$Available = $_GET["Available"];
-
-if ($Pos >= 1 && $Pos <= 5 && ($Available == 0 || $Available == 1)) {
+if (isset($_GET["Position"]) && isset($_GET["Available"])) {
     
-    $sql = "UPDATE parkinglot SET Available = ? WHERE Position = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $Available, $Pos);
+    $Pos = (int)$_GET["Position"];
+    $Available = (int)$_GET["Available"];
     
-    if ($stmt->execute()) {
-        echo "✅ Vaga $Pos atualizada para " . ($Available ? "LIVRE" : "OCUPADA");
-    } else {
-        echo "❌ Erro ao atualizar";
+    if ($Pos >= 1 && $Pos <= 5 && ($Available == 0 || $Available == 1)) {
+        
+        $sql = "UPDATE parkinglot SET Available = $Available WHERE Position = $Pos";
+        
+        if ($conn->query($sql)) {
+            echo "OK";
+        } else {
+            echo "ERRO";
+        }
     }
-    
-    $stmt->close();
-} else {
-    echo "❌ Dados inválidos";
 }
 
 $conn->close();

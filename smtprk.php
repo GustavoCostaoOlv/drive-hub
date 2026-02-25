@@ -185,14 +185,6 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Seção Sobre */
-        .about-section {
-            background: white;
-            border-radius: 50px 50px 0 0;
-            padding: 60px 0;
-            margin-top: 50px;
-        }
-        
         .feature-box {
             text-align: center;
             padding: 30px;
@@ -290,6 +282,202 @@
                 font-size: 48px;
             }
         }
+
+        /* Estilo para o tempo nas vagas */
+/* Estilo para o tempo nas vagas - MAIS DESTACADO */
+.vaga-tempo {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px 12px;
+    border-radius: 25px;
+    font-size: 14px;
+    margin-top: 8px;
+    color: white;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+}
+
+/* Efeito de brilho para tempo */
+.vaga-card.ocupada .vaga-tempo {
+    animation: brilhoSuave 2s infinite;
+}
+
+@keyframes brilhoSuave {
+    0% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
+    50% { box-shadow: 0 0 15px rgba(255,255,255,0.8); }
+    100% { box-shadow: 0 0 5px rgba(255,255,255,0.3); }
+}
+
+/* Estilo para a placa - MAIS DESTACADA */
+.vaga-placa {
+    background: rgba(255, 215, 0, 0.25);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-top: 6px;
+    color: white;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    display: inline-block;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+}
+
+/* Efeito de brilho dourado para placa */
+.vaga-placa:hover {
+    background: rgba(255, 215, 0, 0.4);
+    transform: scale(1.05);
+    transition: all 0.3s;
+}
+
+/* Quando a vaga está ocupada há muito tempo (mais de 1 hora) */
+.vaga-card.ocupada.muito-tempo .vaga-tempo {
+    background: rgba(255, 0, 0, 0.6);
+    animation: pulseAlerta 1.5s infinite;
+    font-weight: 800;
+}
+
+@keyframes pulseAlerta {
+    0% { background: rgba(255, 0, 0, 0.6); }
+    50% { background: rgba(255, 0, 0, 0.9); }
+    100% { background: rgba(255, 0, 0, 0.6); }
+}
+
+/* Botão de reserva */
+.btn-reservar {
+    background: rgba(255,255,255,0.3);
+    border: 2px solid white;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.btn-reservar:hover {
+    background: rgba(255,255,255,0.5);
+    transform: scale(1.05);
+}
+
+/* Badge de reservado */
+.reservado-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #000;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+}
+
+/* Modal de reserva */
+.reserva-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 90%;
+    animation: slideIn 0.3s;
+}
+
+.modal-content h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.modal-content input:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-confirmar {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    flex: 1;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    flex: 1;
+    cursor: pointer;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Botão de liberar */
+.btn-liberar {
+    background: rgba(220, 53, 69, 0.8);
+    border: 2px solid white;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.btn-liberar:hover {
+    background: rgba(220, 53, 69, 1);
+    transform: scale(1.05);
+}
     </style>
 </head>
 <body>
@@ -319,8 +507,9 @@
                     <a class="nav-link" href="ParkingLotDisplay.php"><i class="fas fa-table"></i> Display</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="simulador.php"><i class="fas fa-gamepad"></i> Simulador</a>
-                </li>
+    <a class="nav-link" href="mapas-reais.php"><i class="fas fa-map-marked-alt"></i> Mapa</a>
+</li>
+
             </ul>
         </div>
     </div>
@@ -338,9 +527,6 @@
         <div class="animate__animated animate__fadeInUp">
             <a href="ParkingLotDisplay.php" class="btn btn-light btn-lg me-3">
                 <i class="fas fa-eye"></i> Ver Vagas
-            </a>
-            <a href="simulador.php" class="btn btn-outline-light btn-lg">
-                <i class="fas fa-gamepad"></i> Simulador
             </a>
         </div>
     </div>
@@ -406,9 +592,6 @@
             ?>
             <div class="col-lg-2 col-md-4 col-sm-6">
                 <div class="vaga-card <?php echo $classe; ?>" data-vaga="<?php echo $row['Position']; ?>">
-                    <div class="vaga-badge">
-                        <i class="fas fa-microchip"></i> Sensor <?php echo $row['Position']; ?>
-                    </div>
                     <div class="vaga-numero"><?php echo $row['Position']; ?></div>
                     <div class="vaga-icone">
                         <i class="fas <?php echo $icone; ?>"></i>
@@ -426,80 +609,84 @@
     </div>
 </div>
 
-<!-- Seção Sobre -->
-<section class="about-section">
-    <div class="container">
-        <h2 class="text-center mb-5 animate__animated animate__fadeInUp">
-            <i class="fas fa-cogs"></i> Como Funciona
-        </h2>
-        
-        <div class="row">
-            <div class="col-md-4">
-                <div class="feature-box animate__animated animate__fadeInUp">
-                    <div class="feature-icon">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <h3 class="feature-title">Sensores Ultrassônicos</h3>
-                    <p class="feature-text">5 sensores monitoram a presença de veículos nas vagas em tempo real</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-box animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3 class="feature-title">Banco de Dados</h3>
-                    <p class="feature-text">Informações armazenadas e atualizadas automaticamente no MySQL</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-box animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">Monitoramento</h3>
-                    <p class="feature-text">Visualização em tempo real com atualização automática a cada 3 segundos</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer-modern">
-    <div class="container">
-        <p class="mb-0">
-            <i class="fas fa-parking"></i> Smart Parking IoT &copy; 2024 | 
-            Desenvolvido com <i class="fas fa-heart text-danger"></i> para inovação
-        </p>
-    </div>
-</footer>
-
 <?php $conn->close(); ?>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// Função para atualizar as vagas
+// FUNÇÃO PARA FORMATAR TEMPO
+function formatarTempo(segundos) {
+    if (segundos < 60) return `${segundos}s`;
+    if (segundos < 3600) {
+        let min = Math.floor(segundos / 60);
+        return `${min}min`;
+    }
+    let horas = Math.floor(segundos / 3600);
+    let min = Math.floor((segundos % 3600) / 60);
+    return `${horas}h ${min}min`;
+}
+
+// ATUALIZAR TEMPOS DAS VAGAS
+// ATUALIZAR TEMPOS DAS VAGAS
+function atualizarTempos() {
+    console.log('⏰ Atualizando tempos...');
+    
+    // Primeiro, garantir que o servidor está com dados atualizados
+    fetch('incrementar_tempo.php')
+        .then(() => {
+            // Depois, buscar os tempos atualizados
+            return fetch('get_tempos.php');
+        })
+        .then(response => response.json())
+        .then(vagas => {
+            console.log('📊 Dados de tempo:', vagas);
+            
+            vagas.forEach(vaga => {
+                let card = document.querySelector(`.vaga-card[data-vaga="${vaga.position}"]`);
+                if (!card) return;
+                
+                // Remover elementos antigos
+                let tempoEl = card.querySelector('.vaga-tempo');
+                let placaEl = card.querySelector('.vaga-placa');
+                if (tempoEl) tempoEl.remove();
+                if (placaEl) placaEl.remove();
+                
+                // Se estiver ocupada, adicionar tempo e placa
+                if (vaga.available == 0) {
+                    // Adicionar tempo
+                    tempoEl = document.createElement('div');
+                    tempoEl.className = 'vaga-tempo';
+                    tempoEl.innerHTML = `⏱️ ${vaga.tempo || '0min'}`;
+                    card.querySelector('.vaga-icone').after(tempoEl);
+                    
+                    // Adicionar placa se existir
+                    if (vaga.placa) {
+                        placaEl = document.createElement('div');
+                        placaEl.className = 'vaga-placa';
+                        placaEl.innerHTML = `🚗 ${vaga.placa}`;
+                        tempoEl.after(placaEl);
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Erro tempos:', error));
+}
+
+// ATUALIZAR VAGAS (PRINCIPAL)
 function atualizarVagas() {
     console.log('🔄 Atualizando vagas...');
     
     fetch('getstatusjson.php')
         .then(response => response.json())
         .then(data => {
-            console.log('📊 Dados recebidos:', data);
-            
-            // Pegar todos os cards
-            let cards = document.querySelectorAll('.vaga-card');
-            
             let livres = 0;
             let ocupadas = 0;
+            let cards = document.querySelectorAll('.vaga-card');
             
-            // Atualizar cada card
             data.forEach((vaga, index) => {
                 if (cards[index]) {
-                    let status = vaga.Available; // "1" ou "0"
+                    let status = vaga.Available;
                     
                     if (status == "1") {
                         livres++;
@@ -515,11 +702,9 @@ function atualizarVagas() {
                 }
             });
             
-            // Atualizar contadores
             document.getElementById('livres-count').innerHTML = livres;
             document.getElementById('ocupadas-count').innerHTML = ocupadas;
             
-            // Atualizar timestamp
             let agora = new Date();
             let timestamp = 
                 agora.getHours().toString().padStart(2,'0') + ':' +
@@ -528,20 +713,192 @@ function atualizarVagas() {
             document.getElementById('timestamp').innerHTML = timestamp;
             
             console.log(`✅ Atualizado: ${livres} livres, ${ocupadas} ocupadas`);
+            
+            // Depois de atualizar status, atualizar tempos
+            atualizarTempos();
         })
-        .catch(erro => {
-            console.log('❌ Erro:', erro);
-        });
+        .catch(erro => console.log('❌ Erro:', erro));
 }
 
-// Iniciar atualização a cada 3 segundos
-setInterval(atualizarVagas, 3000);
+// INICIAR SISTEMA
+setInterval(atualizarVagas, 3000);      // Atualizar status a cada 3 segundos
+setInterval(atualizarTempos, 10000);    // Atualizar tempos a cada 10 segundos
 
-// Atualizar quando a página carregar
-document.addEventListener('DOMContentLoaded', atualizarVagas);
+// Primeira execução
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Sistema iniciado');
+    atualizarVagas();
+});
 
-console.log('🚀 Sistema de atualização automática iniciado!');
+// Variável para controlar o modal
+let vagaSelecionada = null;
+
+// Abrir modal de reserva
+function reservarVaga(vaga) {
+    vagaSelecionada = vaga;
+    document.getElementById('modalVaga').value = vaga;
+    document.getElementById('reservaModal').style.display = 'flex';
+}
+
+// Fechar modal
+function fecharModal() {
+    document.getElementById('reservaModal').style.display = 'none';
+    document.getElementById('modalPlaca').value = '';
+    document.getElementById('modalNome').value = '';
+    document.getElementById('modalTelefone').value = '';
+}
+
+// Confirmar reserva
+function confirmarReserva() {
+    const vaga = document.getElementById('modalVaga').value;
+    const placa = document.getElementById('modalPlaca').value.toUpperCase();
+    const nome = document.getElementById('modalNome').value;
+    const telefone = document.getElementById('modalTelefone').value;
+    
+    if (!placa || !nome || !telefone) {
+        alert('❌ Preencha todos os campos!');
+        return;
+    }
+    
+    // Aceita formatos: ABC-1234, ABC1234, ABC1D23, ABC-1D23
+if (!placa || !placa.match(/[A-Z]{3}[-]?[0-9][A-Z0-9][0-9]{2}/)) {
+    alert('❌ Placa inválida! Use formatos como: ABC-1234 ou ABC1D23');
+    return;
+}
+    
+    // Enviar para o servidor
+    fetch('reservar_vaga.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            vaga: vaga,
+            placa: placa,
+            nome: nome,
+            telefone: telefone
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`✅ Vaga ${vaga} reservada com sucesso!`);
+            fecharModal();
+            atualizarVagas(); // Atualizar a página
+        } else {
+            alert('❌ Erro ao reservar: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('❌ Erro: ' + error);
+    });
+}
+
+// Modificar a função atualizarVagas para adicionar botão de reserva
+// ATUALIZAR VAGAS (PRINCIPAL)
+function atualizarVagas() {
+    console.log('🔄 Atualizando vagas...');
+    
+    fetch('getstatusjson.php')
+        .then(response => response.json())
+        .then(data => {
+            let livres = 0;
+            let ocupadas = 0;
+            let cards = document.querySelectorAll('.vaga-card');
+            
+            data.forEach((vaga, index) => {
+                if (cards[index]) {
+                    let status = vaga.Available;
+                    let card = cards[index];
+                    
+                    // Limpar botões antigos
+                    let oldBtn = card.querySelector('.btn-reservar');
+                    let oldLiberar = card.querySelector('.btn-liberar');
+                    if (oldBtn) oldBtn.remove();
+                    if (oldLiberar) oldLiberar.remove();
+                    
+                    if (status == "1") {
+                        livres++;
+                        card.className = 'vaga-card livre';
+                        card.querySelector('.vaga-status').innerHTML = 'LIVRE';
+                        card.querySelector('.vaga-icone i').className = 'fas fa-car';
+                        
+                        // Botão RESERVAR
+                        let btn = document.createElement('button');
+                        btn.className = 'btn-reservar';
+                        btn.innerHTML = '📝 Reservar Vaga';
+                        btn.onclick = () => reservarVaga(vaga.Position);
+                        card.appendChild(btn);
+                        
+                    } else {
+                        ocupadas++;
+                        card.className = 'vaga-card ocupada';
+                        card.querySelector('.vaga-status').innerHTML = 'OCUPADA';
+                        card.querySelector('.vaga-icone i').className = 'fas fa-car-side';
+                        
+                        // Botão LIBERAR
+                        let btn = document.createElement('button');
+                        btn.className = 'btn-liberar';
+                        btn.innerHTML = '✅ Liberar Vaga';
+                        btn.onclick = () => liberarVaga(vaga.Position);
+                        card.appendChild(btn);
+                    }
+                }
+            });
+            
+            document.getElementById('livres-count').innerHTML = livres;
+            document.getElementById('ocupadas-count').innerHTML = ocupadas;
+            
+            let agora = new Date();
+            let timestamp = 
+                agora.getHours().toString().padStart(2,'0') + ':' +
+                agora.getMinutes().toString().padStart(2,'0') + ':' +
+                agora.getSeconds().toString().padStart(2,'0');
+            document.getElementById('timestamp').innerHTML = timestamp;
+            
+            console.log(`✅ Atualizado: ${livres} livres, ${ocupadas} ocupadas`);
+            atualizarTempos();
+        })
+        .catch(erro => console.log('❌ Erro:', erro));
+}
+
+// FUNÇÃO PARA LIBERAR VAGA
+function liberarVaga(vaga) {
+    if (confirm(`Tem certeza que deseja liberar a Vaga ${vaga}?`)) {
+        fetch('liberar_vaga.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({vaga: vaga})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`✅ Vaga ${vaga} liberada!`);
+                atualizarVagas();
+            } else {
+                alert('❌ Erro ao liberar vaga');
+            }
+        })
+        .catch(error => {
+            alert('❌ Erro: ' + error);
+        });
+    }
+}
 </script>
 
+<!-- Modal de Reserva -->
+<div class="reserva-modal" id="reservaModal">
+    <div class="modal-content">
+        <h3><i class="fas fa-parking"></i> Reservar Vaga</h3>
+        <input type="text" id="modalPlaca" placeholder="Placa do Veículo" 
+       style="text-transform:uppercase" required>
+        <input type="text" id="modalNome" placeholder="Nome do Motorista">
+        <input type="text" id="modalTelefone" placeholder="Telefone para contato">
+        <input type="hidden" id="modalVaga">
+        
+        <div class="modal-buttons">
+            <button class="btn-confirmar" onclick="confirmarReserva()">✓ Confirmar</button>
+            <button class="btn-cancelar" onclick="fecharModal()">✗ Cancelar</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

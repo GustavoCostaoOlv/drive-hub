@@ -296,9 +296,19 @@ while($row = $result->fetch_assoc()) {
 <?php $conn->close(); ?>
 
 <script>
-const BASE_PATH = '/index/Smart-Parking-System-master/';
+const BASE_PATH = '/index/DriveHub/';
 
 function enviarDado(vaga, status) {
+    // Pedir placa se for ocupar
+    let placa = '';
+    if (status == 0) { // OCUPAR
+        placa = prompt('Digite a placa do veículo (ex: ABC-1234):', 'ABC-1234');
+        if (!placa) {
+            alert('Placa obrigatória!');
+            return;
+        }
+    }
+    
     // Atualizar interface
     let card = document.querySelector(`[data-vaga="${vaga}"]`);
     if (card) {
@@ -308,14 +318,24 @@ function enviarDado(vaga, status) {
         card.querySelector('.vaga-icone i').className = `fas ${status ? 'fa-car' : 'fa-car-side'}`;
     }
     
+    // Enviar para o PHP (atualizar banco)
     let url = BASE_PATH + `UpdateAvailability.php?Position=${vaga}&Available=${status}`;
     
-    adicionarLog(`📤 Enviando: Vaga ${vaga} = ${status ? 'LIVRE' : 'OCUPADA'}...`, 'info');
-    
     fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            adicionarLog(`✅ Vaga ${vaga} alterada`, 'success');
+        .then(() => {
+            // Enviar também o tempo para o novo sistema
+            return fetch(BASE_PATH + 'atualizartempo.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    vaga: vaga,
+                    status: status,
+                    placa: placa
+                })
+            });
+        })
+        .then(() => {
+            adicionarLog(`✅ Vaga ${vaga} ${status ? 'LIVRE' : 'OCUPADA'} ${placa ? '('+placa+')' : ''}`, 'success');
             atualizarContadores();
         })
         .catch(error => {
