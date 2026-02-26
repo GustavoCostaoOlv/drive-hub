@@ -209,7 +209,7 @@
 
 <!-- Header -->
 <div class="app-header">
-    <a href="smtprk.php" class="btn-back">
+    <a href="index.php" class="btn-back">
         <i class="fas fa-arrow-left"></i>
     </a>
     <h1><i class="fas fa-gamepad"></i> Simulador</h1>

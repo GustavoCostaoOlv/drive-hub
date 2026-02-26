@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -478,15 +481,12 @@ async function pesquisarCidade(cidadeParametro = null) {
 // ============================================
 // BUSCAR ESTACIONAMENTOS NA ÁREA ATUAL DO MAPA
 // ============================================
+// ============================================
+// BUSCAR ESTACIONAMENTOS NA ÁREA ATUAL DO MAPA
+// ============================================
 async function buscarEstacionamentosNoMapa() {
 
-console.log('🔍 Chamada recebida em:', new Date().toLocaleTimeString(), 'já está buscando?', buscandoEstacionamentos);
-
- // EVITAR MÚLTIPLAS BUSCAS SIMULTÂNEAS
-    if (buscandoEstacionamentos) {
-        console.log('⏳ Já está buscando estacionamentos...');
-        return;
-    }
+    console.log('🔍 Chamada recebida em:', new Date().toLocaleTimeString(), 'já está buscando?', buscandoEstacionamentos);
 
     // EVITAR MÚLTIPLAS BUSCAS SIMULTÂNEAS
     if (buscandoEstacionamentos) {
@@ -629,11 +629,11 @@ console.log('🔍 Chamada recebida em:', new Date().toLocaleTimeString(), 'já e
             Erro ao buscar estacionamentos.
         `;
     } finally {
-    // DESLIGAR LOADING E LIBERAR FLAG
-    document.getElementById('loading').style.display = 'none';
-    buscandoEstacionamentos = false;  // ← LINHA CRÍTICA!
-    console.log('✅ Busca finalizada, flag liberada');
-}
+        // DESLIGAR LOADING E LIBERAR FLAG
+        document.getElementById('loading').style.display = 'none';
+        buscandoEstacionamentos = false;
+        console.log('✅ Busca finalizada, flag liberada');
+    }
 }
 
 // ============================================

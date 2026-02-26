@@ -1,3 +1,8 @@
+<?php
+session_start();  // ← PRIMEIRA LINHA DE CÓDIGO!
+include 'dbcon.php';
+require_once 'verificar_login.php';  // ← PROTEÇÃO
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,10 +10,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Bootstrap 5 (mais moderno) -->
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome para ícones -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
@@ -482,8 +487,6 @@
 </head>
 <body>
 
-<?php include 'dbcon.php'; ?>
-
 <!-- Loading Overlay -->
 <div class="loading-overlay" id="loading">
     <div class="loading-spinner"></div>
@@ -507,9 +510,33 @@
                     <a class="nav-link" href="ParkingLotDisplay.php"><i class="fas fa-table"></i> Display</a>
                 </li>
                 <li class="nav-item">
-    <a class="nav-link" href="mapas-reais.php"><i class="fas fa-map-marked-alt"></i> Mapa</a>
-</li>
-
+                    <a class="nav-link" href="mapas-reais.php"><i class="fas fa-map-marked-alt"></i> Mapa</a>
+                </li>
+                
+                <!-- ÍTENS DO USUÁRIO -->
+                <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
+                    <li class="nav-item">
+                        <span class="nav-link text-white">
+                            <i class="fas fa-user-circle"></i> <?php echo $_SESSION['usuario_nome']; ?>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link text-white-50">
+                            <small><?php echo $_SESSION['usuario_email']; ?></small>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">
+                            <i class="fas fa-sign-in-alt"></i> Entrar
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -585,7 +612,8 @@
             $sql = "SELECT Position, Available FROM parkinglot ORDER BY Position";
             $result = $conn->query($sql);
             
-            while($row = $result->fetch_assoc()) { 
+            if($result && $result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) { 
                 $classe = $row['Available'] == 1 ? 'livre' : 'ocupada';
                 $icone = $row['Available'] == 1 ? 'fa-car' : 'fa-car-side';
                 $texto = $row['Available'] == 1 ? 'LIVRE' : 'OCUPADA';
@@ -599,7 +627,11 @@
                     <div class="vaga-status"><?php echo $texto; ?></div>
                 </div>
             </div>
-            <?php } ?>
+            <?php } 
+            } else { 
+                echo '<p style="color: white; text-align: center;">Erro ao carregar vagas</p>';
+            }
+            ?>
         </div>
     </div>
     
