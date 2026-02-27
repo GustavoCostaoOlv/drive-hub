@@ -298,83 +298,83 @@ let nossasVagas = [];
 // let geocoder = L.Control.Geocoder.nominatim();
 let buscandoEstacionamentos = false;
 
-// FUNÇÃO PARA BUSCAR COORDENADAS DA CIDADE (SEM CORS)
-// FUNÇÃO PARA BUSCAR COORDENADAS DA CIDADE (COM RETRY)
+// FUNÇÃO PARA BUSCAR COORDENADAS DA CIDADE (VERSÃO MELHORADA)
 async function buscarCoordenadas(cidade, tentativa = 1) {
     const maxTentativas = 3;
     
-    // Lista de diferentes formatos para tentar
+    // LISTA DE FORMATOS PARA TENTAR
     const formatos = [
         cidade, // original
         cidade.normalize('NFD').replace(/[\u0300-\u036f]/g, ""), // sem acentos
-        cidade.split(',')[0].trim() + ', Brasil', // com país
+        cidade + ', Brasil', // com país
+        cidade.split(',')[0].trim() + ', Brasil', // só a cidade + Brasil
+        cidade.replace(/[^a-zA-Z0-9 ]/g, ''), // remove caracteres especiais
         cidade.split(' ').join('+'), // com + no lugar de espaços
         encodeURIComponent(cidade) // codificado
     ];
     
-    const cidadeFormatada = encodeURIComponent(formatos[0]);
-    
-    try {
-        console.log(`🔍 Tentativa ${tentativa}/${maxTentativas} - Buscando:`, cidade);
+    // TENTAR CADA FORMATO
+    for (let i = 0; i < formatos.length; i++) {
+        const cidadeFormatada = formatos[i];
         
-        // Proxy CORS público (alternando para não sobrecarregar)
-        const proxies = [
-            'https://corsproxy.io/?',
-            'https://api.allorigins.win/raw?url=',
-            'https://cors-anywhere.herokuapp.com/'
-        ];
-        
-        // Usar proxy diferente a cada tentativa
-        const proxyIndex = (tentativa - 1) % proxies.length;
-        const proxy = proxies[proxyIndex];
-        
-        const url = proxy + encodeURIComponent(
-            'https://nominatim.openstreetmap.org/search?q=' + cidadeFormatada + 
-            '&limit=1&format=json&accept-language=pt'
-        );
-        
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 segundos
-        
-        const response = await fetch(url, {
-            signal: controller.signal,
-            headers: {
-                'User-Agent': 'DriveHub-Parking/1.0'
+        try {
+            console.log(`🔍 Tentativa ${i+1}: "${cidadeFormatada}"`);
+            
+            // PROXIES CORS (alternando)
+            const proxies = [
+                'https://corsproxy.io/?',
+                'https://api.allorigins.win/raw?url=',
+                'https://cors-anywhere.herokuapp.com/'
+            ];
+            
+            const proxy = proxies[(tentativa - 1) % proxies.length];
+            
+            const url = proxy + encodeURIComponent(
+                'https://nominatim.openstreetmap.org/search?q=' + cidadeFormatada + 
+                '&limit=5&format=json&accept-language=pt&addressdetails=1'
+            );
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            
+            const response = await fetch(url, {
+                signal: controller.signal,
+                headers: {'User-Agent': 'DriveHub-Parking/1.0'}
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) continue;
+            
+            const data = await response.json();
+            
+            if (data && data.length > 0) {
+                // PEGAR O MELHOR RESULTADO
+                let melhorResultado = data[0];
+                
+                // PROCURAR POR CIDADE NO NOME (em vez de bairro)
+                for (let j = 0; j < data.length; j++) {
+                    if (data[j].type === 'city' || data[j].type === 'town') {
+                        melhorResultado = data[j];
+                        break;
+                    }
+                }
+                
+                console.log('✅ Encontrado:', melhorResultado.display_name);
+                return {
+                    lat: parseFloat(melhorResultado.lat),
+                    lng: parseFloat(melhorResultado.lon),
+                    nome: melhorResultado.display_name
+                };
             }
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data && data.length > 0) {
-            console.log('✅ Cidade encontrada:', data[0].display_name);
-            return {
-                lat: parseFloat(data[0].lat),
-                lng: parseFloat(data[0].lon),
-                nome: data[0].display_name
-            };
-        } else {
-            throw new Error('Cidade não encontrada nos resultados');
-        }
-        
-    } catch (error) {
-        console.error(`❌ Tentativa ${tentativa} falhou:`, error.message);
-        
-        // Se ainda tem tentativas, tenta novamente
-        if (tentativa < maxTentativas) {
-            console.log(`⏳ Aguardando 2s para tentar novamente...`);
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            return buscarCoordenadas(cidade, tentativa + 1);
-        } else {
-            // Todas as tentativas falharam
-            throw new Error(`Não foi possível encontrar "${cidade}" após ${maxTentativas} tentativas`);
+            
+        } catch (error) {
+            console.log(`❌ Tentativa ${i+1} falhou:`, error.message);
         }
     }
+    
+    // SE CHEGOU AQUI, NENHUMA TENTATIVA FUNCIONOU
+    throw new Error(`Não foi possível encontrar "${cidade}"`);
 }
 
 // COORDENADAS DAS NOSSAS VAGAS (MONITORADAS)
@@ -403,9 +403,7 @@ function iniciarMapa() {
         Clique em "Pesquisar" para buscar estacionamentos em Fortaleza
     `;
 }
-// ============================================
-// FUNÇÃO PRINCIPAL DE PESQUISA - CORRIGIDA SEM CORS
-// ============================================
+// FUNÇÃO PRINCIPAL DE PESQUISA - VERSÃO MELHORADA
 async function pesquisarCidade(cidadeParametro = null) {
     let cidade;
     
@@ -421,62 +419,47 @@ async function pesquisarCidade(cidadeParametro = null) {
         return;
     }
     
-    // VERIFICAR SE JÁ ESTÁ BUSCANDO
     if (buscandoEstacionamentos) {
         console.log('⏳ Já existe uma busca em andamento');
         return;
     }
     
-    // MOSTRAR LOADING
     document.getElementById('loading').style.display = 'flex';
     document.getElementById('cidade-atual').textContent = cidade;
     document.getElementById('local-info').innerHTML = `
         <i class="fas fa-info-circle"></i>
-        Buscando cidade: ${cidade}...
+        Buscando: ${cidade}...
     `;
     
     try {
-        // PASSO 1: BUSCAR COORDENADAS DA CIDADE
         const resultado = await buscarCoordenadas(cidade);
         
-        // PASSO 2: MOVER O MAPA PARA A CIDADE
         mapa.flyTo([resultado.lat, resultado.lng], 14, {
             duration: 2,
             easeLinearity: 0.5
         });
         
-        // Atualizar info
         document.getElementById('local-info').innerHTML = `
             <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
-            Cidade encontrada: ${resultado.nome}<br>
+            <strong>${resultado.nome}</strong><br>
             <small>Buscando estacionamentos...</small>
         `;
         
-        // PASSO 3: AGUARDAR O MAPA TERMINAR DE VOAR
         setTimeout(() => {
             buscarEstacionamentosNoMapa();
         }, 2500);
         
     } catch (error) {
-    console.error('Erro final:', error);
-    document.getElementById('loading').style.display = 'none';
-    
-    let mensagemErro = `Não foi possível encontrar "${cidade}".`;
-    
-    if (cidade.length < 3) {
-        mensagemErro = 'Digite um nome de cidade mais específico.';
-    } else {
-        mensagemErro += ' Tente:';
-        mensagemErro += '<br>• Adicionar o estado (ex: "Fortaleza, CE")';
-        mensagemErro += '<br>• Remover acentos (ex: "Sao Paulo")';
-        mensagemErro += '<br>• Usar o nome completo';
+        console.error('Erro:', error);
+        document.getElementById('loading').style.display = 'none';
+        
+        // MENSAGEM DE ERRO MAIS AMIGÁVEL
+        document.getElementById('local-info').innerHTML = `
+            <i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i>
+            Não encontrei "${cidade}".<br>
+            <small>Tente: "Fortaleza, CE" ou "São Paulo, SP"</small>
+        `;
     }
-    
-    document.getElementById('local-info').innerHTML = `
-        <i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i>
-        ${mensagemErro}
-    `;
-}
 }
 // ============================================
 // BUSCAR ESTACIONAMENTOS NA ÁREA ATUAL DO MAPA
