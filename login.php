@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_GET['redirect']) && !empty($_GET['redirect'])) {
             header('Location: ' . $_GET['redirect']);
         } else {
-            header('Location: index.php');
+            header('Location: quem-somos.php');
         }
         exit;
     } else {

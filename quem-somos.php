@@ -432,9 +432,9 @@
         
         <div class="video-wrapper animate__animated animate__zoomIn">
             <video controls autoplay muted loop>
-                <source src="videos/drivehub-promo.mp4" type="video/mp4">
+                <source src="videos/promo.mp4" type="video/mp4">
                 Seu navegador não suporta vídeo. 
-                <a href="videos/drivehub-promo.mp4">Clique aqui para baixar</a>
+                <a href="videos/promo.mp4">Clique aqui para baixar</a>
             </video>
         </div>
     </div>
@@ -556,7 +556,7 @@
 <footer class="footer">
     <div class="container">
         <p>
-            <i class="fas fa-parking"></i> DriveHub - Estacionamento Inteligente &copy; 2024 | 
+            <i class="fas fa-parking"></i> DriveHub - Estacionamento Inteligente &copy; 2026 | 
             Todos os direitos reservados
         </p>
     </div>
