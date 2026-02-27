@@ -384,11 +384,6 @@
                 <span>Vaga não cadastrada</span>
             </div>
         </div>
-        
-        <div class="timestamp">
-            <i class="fas fa-clock"></i>
-            Última atualização: <span id="timestamp"><?php echo date('H:i:s'); ?></span>
-        </div>
     </div>
 </div>
 

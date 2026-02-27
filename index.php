@@ -504,6 +504,9 @@ require_once 'verificar_login.php';  // ← PROTEÇÃO
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="quem-somos.php"><i class="fas fa-users"></i> Quem Somos</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link active" href="#home"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li class="nav-item">
@@ -516,9 +519,9 @@ require_once 'verificar_login.php';  // ← PROTEÇÃO
                 <!-- ÍTENS DO USUÁRIO -->
                 <?php if (isset($_SESSION['logado']) && $_SESSION['logado'] === true): ?>
                     <li class="nav-item">
-                        <span class="nav-link text-white">
+                        <a class="nav-link" href="perfil.php">
                             <i class="fas fa-user-circle"></i> <?php echo $_SESSION['usuario_nome']; ?>
-                        </span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <span class="nav-link text-white-50">
@@ -634,12 +637,6 @@ require_once 'verificar_login.php';  // ← PROTEÇÃO
             ?>
         </div>
     </div>
-    
-    <!-- Timestamp -->
-    <div class="timestamp animate__animated animate__fadeInUp">
-        <i class="fas fa-clock"></i> Última atualização: <span id="timestamp"><?php echo date('H:i:s'); ?></span>
-    </div>
-</div>
 
 <?php $conn->close(); ?>
 
