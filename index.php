@@ -657,7 +657,6 @@ function formatarTempo(segundos) {
 }
 
 // ATUALIZAR TEMPOS DAS VAGAS
-// ATUALIZAR TEMPOS DAS VAGAS
 function atualizarTempos() {
     console.log('⏰ Atualizando tempos...');
     
@@ -700,53 +699,6 @@ function atualizarTempos() {
             });
         })
         .catch(error => console.error('Erro tempos:', error));
-}
-
-// ATUALIZAR VAGAS (PRINCIPAL)
-function atualizarVagas() {
-    console.log('🔄 Atualizando vagas...');
-    
-    fetch('getstatusjson.php')
-        .then(response => response.json())
-        .then(data => {
-            let livres = 0;
-            let ocupadas = 0;
-            let cards = document.querySelectorAll('.vaga-card');
-            
-            data.forEach((vaga, index) => {
-                if (cards[index]) {
-                    let status = vaga.Available;
-                    
-                    if (status == "1") {
-                        livres++;
-                        cards[index].className = 'vaga-card livre';
-                        cards[index].querySelector('.vaga-status').innerHTML = 'LIVRE';
-                        cards[index].querySelector('.vaga-icone i').className = 'fas fa-car';
-                    } else {
-                        ocupadas++;
-                        cards[index].className = 'vaga-card ocupada';
-                        cards[index].querySelector('.vaga-status').innerHTML = 'OCUPADA';
-                        cards[index].querySelector('.vaga-icone i').className = 'fas fa-car-side';
-                    }
-                }
-            });
-            
-            document.getElementById('livres-count').innerHTML = livres;
-            document.getElementById('ocupadas-count').innerHTML = ocupadas;
-            
-            let agora = new Date();
-            let timestamp = 
-                agora.getHours().toString().padStart(2,'0') + ':' +
-                agora.getMinutes().toString().padStart(2,'0') + ':' +
-                agora.getSeconds().toString().padStart(2,'0');
-            document.getElementById('timestamp').innerHTML = timestamp;
-            
-            console.log(`✅ Atualizado: ${livres} livres, ${ocupadas} ocupadas`);
-            
-            // Depois de atualizar status, atualizar tempos
-            atualizarTempos();
-        })
-        .catch(erro => console.log('❌ Erro:', erro));
 }
 
 // INICIAR SISTEMA

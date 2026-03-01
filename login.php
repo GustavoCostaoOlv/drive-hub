@@ -196,22 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         .register-link a:hover {
             text-decoration: underline;
-
-            .register-link {
-                text-align: center;
-                margin-top: 20px;
-                font-size: 14px;
-            }
-
-            .register-link a {
-                color: #667eea;
-                text-decoration: none;
-                font-weight: 600;
-            }
-
-            .register-link a:hover {
-                text-decoration: underline;
-            }
         }
     </style>
 </head>
