@@ -1,5 +1,11 @@
 # 🅿️ DriveHub - Smart Parking System
 
+INTEGRANTES: 
+1 - LUIZ GUSTAVO
+2 - MATHEUS LIMA
+3 - PEDRO VICTOR
+4 - JAMILY VITORIA
+5 - JOÃO PEDRO
 ### 📋 Sobre o Projeto
 
 Este sistema foi desenvolvido para resolver um problema comum: a dificuldade de encontrar vagas em estacionamentos lotados. O que começou como uma frustração pessoal em um estacionamento de supermercado se transformou em uma solução completa de monitoramento de vagas em tempo real.

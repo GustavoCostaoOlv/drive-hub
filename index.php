@@ -1,7 +1,7 @@
 <?php
-session_start();  // ← PRIMEIRA LINHA DE CÓDIGO!
+session_start();  
 include 'dbcon.php';
-require_once 'verificar_login.php';  // ← PROTEÇÃO
+require_once 'verificar_login.php'; 
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -644,17 +644,7 @@ require_once 'verificar_login.php';  // ← PROTEÇÃO
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// FUNÇÃO PARA FORMATAR TEMPO
-function formatarTempo(segundos) {
-    if (segundos < 60) return `${segundos}s`;
-    if (segundos < 3600) {
-        let min = Math.floor(segundos / 60);
-        return `${min}min`;
-    }
-    let horas = Math.floor(segundos / 3600);
-    let min = Math.floor((segundos % 3600) / 60);
-    return `${horas}h ${min}min`;
-}
+
 
 // ATUALIZAR TEMPOS DAS VAGAS
 function atualizarTempos() {
